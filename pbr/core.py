@@ -123,9 +123,9 @@ def pbr(dist, attr, value):
                     msg = 'Unknown distribution option: %s' % repr(key)
                     warnings.warn(msg)
 
-        # Re-finalize the underlying Distribution
-        orig_Distribution = dist.__class__.__bases__[0]
-        orig_Distribution.finalize_options(dist)
+        # Re-finalize the underlying Distribution using only distutils.
+        # Assumes that dist is a setuptools.dist.Distribution.
+        super(dist.__class__, dist).finalize_options()
 
         # This bit comes out of distribute/setuptools
         if isinstance(dist.metadata.version, integer_types + (float,)):
